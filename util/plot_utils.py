@@ -107,5 +107,18 @@ def plot_precision_recall(files, naming_scheme='iter'):
     axs[1].legend(names)
     return fig, axs
 
-
+def pr_perClass(eval_path):
+    CLASSES = []
+    data = torch.load(eval_path)
+    precision = data['precision']
+    recall = data['params'].recThrs
+    colors = sns.color_palette(n_colors=len(CLASSES))
+    for i, color in zip(range(0,len(CLASSES)), colors):
+        pre = precision[0, :, i, 0, -1]
+        plt.plot(recall, pre, c=color)
+    plt.title('Precision / Recall')
+    plt.legend(CLASSES)
+    plt.savefig('pr_perClass.png')
+    #plt.show()
+    return
 
